@@ -1,15 +1,34 @@
+
 import React from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
+import { Row, Container, Jumbotron } from 'react-bootstrap';
 
-export const Home = () => (
-	<div className="text-center mt-5">
-		<h1>Hello Rigo!</h1>
-		<p>
-			<img src={rigoImage} />
-		</p>
-		<a href="#" className="btn btn-success">
-			If you see this green button, bootstrap is working
-		</a>
-	</div>
-);
+
+import { Link, useNavigate } from "react-router-dom";
+import ExampleCard from "../component/ExampleCard.jsx";
+
+ export const Home = () => {
+  const navigate = useNavigate();
+  return (
+
+    <Container>
+		
+      <Row>
+        <ExampleCard />
+        <ExampleCard />
+        <ExampleCard />
+      </Row>
+      <Row>
+        <ExampleCard />
+        <ExampleCard />
+        <ExampleCard />
+      </Row>
+      <Row>
+        <ExampleCard />
+        <ExampleCard />
+        <ExampleCard />
+      </Row>
+    </Container>
+  );
+};
