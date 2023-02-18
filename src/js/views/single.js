@@ -3,24 +3,57 @@ import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-export const Single = props => {
-	const { store, actions } = useContext(Context);
-	const params = useParams();
-	return (
-		<div className="jumbotron">
-			<h1 className="display-4">This will show the demo element: {store.demo[params.theid].title}</h1>
+export const Single = () => {
+  const { store, actions } = useContext(Context);
+  const [entity, setEntity] = useState(null);
+  const { id } = useParams();
 
-			<hr className="my-4" />
+  useEffect(() => {
+    const entity = actions.getSingleEntity(id);
+    setEntity(entity);
+  }, []);
 
-			<Link to="/">
-				<span className="btn btn-primary btn-lg" href="#" role="button">
-					Back home
-				</span>
-			</Link>
-		</div>
-	);
+  return (
+    <div className="container">
+      {entity && (
+        <div className="row">
+          <div className="col-md-6">
+            <img
+              src={`https://starwars-visualguide.com/assets/img/${store.entity_type}/${id}.jpg`}
+              className="w-100"
+              alt={entity.name}
+            />
+          </div>
+          <div className="col-md-6">
+            <h1>{entity.name}</h1>
+            <p>{entity.description}</p>
+            <hr />
+            <p>
+              <strong>Height:</strong> {entity.height}
+            </p>
+            <p>
+              <strong>Mass:</strong> {entity.mass}
+            </p>
+            <p>
+              <strong>Hair color:</strong> {entity.hair_color}
+            </p>
+            <p>
+              <strong>Skin color:</strong> {entity.skin_color}
+            </p>
+            <p>
+              <strong>Eye color:</strong> {entity.eye_color}
+            </p>
+            <p>
+              <strong>Birth year:</strong> {entity.birth_year}
+            </p>
+            <p>
+              <strong>Gender:</strong> {entity.gender}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
-Single.propTypes = {
-	match: PropTypes.object
-};
+export default Single;
