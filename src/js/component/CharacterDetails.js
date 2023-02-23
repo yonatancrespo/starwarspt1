@@ -8,13 +8,16 @@ export const CharacterDetails = () => {
   const { store, actions } = useContext(Context);
   const [character, setCharacter] = useState(null);
 
-  useEffect(() => {
-    const fetchCharacter = async () => {
-      const data = await actions.getCharacter(id);
-      setCharacter(data);
-    };
-    fetchCharacter();
-  }, []);
+  async function fetchCharacter() {
+    try{
+    const response = fetch(`https://www.swapi.tech/api/people/${id}`)
+    const processResponse = response.json();
+    console.log(processResponse)
+    } catch (err) {
+    console.log(err)
+    }
+    }
+    
 
   return (
     <Container>
@@ -22,17 +25,12 @@ export const CharacterDetails = () => {
         <Col md={8}>
           {character ? (
             <Card>
-              <Card.Img
-                variant="top"
-                src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
-              />
               <Card.Body>
                 <Card.Title>{character.name}</Card.Title>
                 <Card.Text>
-                  <p>Birth year: {character.birth_year}</p>
                   <p>Gender: {character.gender}</p>
+                  console.log(character.gender)
                   <p>Height: {character.height}</p>
-                  <p>Mass: {character.mass}</p>
                   <p>Skin color: {character.skin_color}</p>
                   <p>Eye color: {character.eye_color}</p>
                 </Card.Text>

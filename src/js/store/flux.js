@@ -16,11 +16,22 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.log("getPlanets Error: ", error);
                 }
             },
-            getPeople: async () => {
+            getCharacter: async () => {
                 try {
                     const response = await fetch("https://www.swapi.tech/api/people");
                     const { results } = await response.json();
-                    setStore({ people: results });
+                    const peopleWithDetails = await Promise.all(results.map(async person => {
+                        const detailResponse = await fetch(`https://www.swapi.tech/api/people/${person.uid}`);
+                        const { result } = await detailResponse.json();
+                        person.height = result.properties.height;
+                        person.mass = result.properties.mass;
+                        person.gender = result.properties.gender;
+                        person.skin_color = result.properties.skin_color;
+                        person.eye_color = result.properties.eye_color;
+                        person.birth_year = result.properties.birth_year;
+                        return person;
+                    }));
+                    setStore({ people: peopleWithDetails });
                 } catch (error) {
                     console.log("getPeople Error: ", error);
                 }
@@ -46,7 +57,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const store = getStore();
                 const filteredFavorites = store.favorites.filter(favorite => favorite.uid !== item.uid);
                 setStore({ favorites: filteredFavorites });
-            }
+            },
+
         }
     };
 };
